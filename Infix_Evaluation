@@ -1,0 +1,85 @@
+// postfix evaluation
+#include<stdio.h>
+#include<stdlib.h>
+#define size 100
+#define postfixsize 100
+int top=-1;
+int stack[100];
+void push(int item)
+{
+    if(top>=size-1)
+    {
+        printf("Overflow Occured");
+    }
+    else
+    {
+        top=top+1;
+        stack[top]=item;
+    }
+}
+int pop()
+{
+    int item;
+    if(top==-1)
+    {
+        printf("Underflow Occured");
+    }
+    else
+    {
+        item=stack[top];
+        top=top-1;
+        return item;
+    }
+}
+void infi_eval(char postfix[])
+{
+    int p,q;
+    char item;
+    int value;
+    int A,B;
+    for(int i=0;postfix[i]!=')';i++)
+    {
+        item=postfix[i];
+        if(isdigit(item))
+        {
+            push(item-'0');
+        }
+        else if(item=='+' || item=='-' || item=='*' || item=='/')
+        {
+            A=pop();
+            B=pop();
+            switch(item)
+            {
+                case '*': 
+                        value=B*A;
+                        break;
+                case '+':
+                        value=B+A;
+                        break;
+                case '-':
+                        value=B-A;
+                        break;
+                case '/':
+                        value=B/A;
+                        break;
+            }
+            push(value);
+        }
+    }
+     printf("Result of the postfix after evaluation is %d\n",pop());
+}
+int main()
+{
+    char postfix[postfixsize];
+    printf("Enter the postfix expression\n");
+    //printf("enter ) to end the expression\n");
+    for(int i=0;i<postfixsize-1;i++)
+    {
+        scanf("%c",&postfix[i]);
+        if(postfix[i]==')')
+        {
+            break;
+        }
+    }
+    infi_eval(postfix);
+}
